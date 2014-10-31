@@ -1,2 +1,3 @@
-hpool-stratum
-=============
+﻿# hpool-stratum
+
+

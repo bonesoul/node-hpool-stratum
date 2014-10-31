@@ -1,0 +1,10 @@
+{
+  "name": "hpool-stratum",
+  "version": "0.0.1",
+  "description": "Stratum protocol module for hpool",
+  "main": "app.js",
+  "author": {
+    "name": "Huseyin Uslu",
+    "email": "huseyin@coinium.org"
+  }
+}
