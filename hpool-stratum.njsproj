@@ -30,6 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="lib\utils.js" />
     <Compile Include="standalone.js" />
     <Compile Include="lib\stratumClient.js" />
     <Compile Include="lib\stratumServer.js" />
