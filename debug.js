@@ -24,10 +24,7 @@ var StratumServer = require('./lib/stratumServer.js');
 
 winston.log('info', 'hpool-stratum starting..');
 
-var Debug = function () {    
-    var server = new StratumServer();    
-}
-Debug.prototype.__proto__ = events.EventEmitter.prototype;
-
-var start = new Debug();
+// Actually we are in scope of a module and we shouldn't be run on our own.
+// This file is just here for debugging purposes.
+var server = new StratumServer();  
 
