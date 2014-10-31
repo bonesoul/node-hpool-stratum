@@ -1,10 +1,28 @@
 {
-  "name": "hpool-stratum",
-  "version": "0.0.1",
-  "description": "Stratum protocol module for hpool",
-  "main": "app.js",
-  "author": {
-    "name": "Huseyin Uslu",
-    "email": "huseyin@coinium.org"
-  }
+    "name": "hpool-stratum",
+    "version": "0.0.1",
+    "description": "Stratum protocol module for hpool",
+    "license": "GPL-3.0",
+    "keywords": [
+        "stratum",
+        "protocol",
+        "json",
+        "json-rpc"
+    ],
+    "main": "app.js",
+    "homepage": "https://github.com/int6/hpool-stratum",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/int6/hpool-stratum.git"
+    },    
+    "bugs": {
+        "url": "https://github.com/int6/hpool-stratum/issues"
+    },
+    "author": {
+        "name": "Huseyin Uslu",
+        "email": "huseyin@coinium.org"
+    },
+    "engines": {
+        "node": ">=0.10"
+    }
 }
