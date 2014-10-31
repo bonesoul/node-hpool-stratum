@@ -18,9 +18,16 @@
 //     Alternatively, you can license this software under a commercial
 //     license or white-label it as set out in licenses/commercial.txt.
 
+var events = require('events');
 var winston = require('winston');
 var StratumServer = require('./lib/stratumServer.js');
 
 winston.log('info', 'hpool-stratum starting..');
 
-var server = new StratumServer();
+var Debug = function () {    
+    var server = new StratumServer();    
+}
+Debug.prototype.__proto__ = events.EventEmitter.prototype;
+
+var start = new Debug();
+

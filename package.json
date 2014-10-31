@@ -9,7 +9,7 @@
         "json",
         "json-rpc"
     ],
-    "main": "standalone.js",
+    "main": "debug.js",
     "homepage": "https://github.com/int6/hpool-stratum",
     "repository": {
         "type": "git",

@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a6c82125-2ee2-49f7-9570-259346688029</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>standalone.js</StartupFile>
+    <StartupFile>debug.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="lib\utils.js" />
-    <Compile Include="standalone.js" />
+    <Compile Include="debug.js" />
     <Compile Include="lib\stratumClient.js" />
     <Compile Include="lib\stratumServer.js" />
     <Content Include="package.json" />
