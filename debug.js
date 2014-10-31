@@ -22,7 +22,7 @@ var events = require('events');
 var winston = require('winston');
 var StratumServer = require('./lib/stratumServer.js');
 
-winston.log('info', 'hpool-stratum starting..');
+winston.log('info', 'hpool-stratum <debug> starting..');
 
 // Actually we are in scope of a module and we shouldn't be run on our own.
 // This file is just here for debugging purposes.

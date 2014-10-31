@@ -1,6 +1,6 @@
 {
     "name": "hpool-stratum",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Stratum protocol module for hpool",
     "license": "GPL-3.0",
     "keywords": [
@@ -9,9 +9,8 @@
         "json",
         "json-rpc"
     ],
-    "os": [ "linux", "darwin", "!win32" ],
+    "os": [ "linux", "darwin", "win32" ],
     "cpu": [ "x64", "ia32", "arm", "mips" ],
-    "main": "debug.js",
     "homepage": "https://github.com/int6/hpool-stratum",
     "author": "Huseyin Uslu <shalafiraistlin@gmail.com> (http://www.coinium.org)",
     "repository": {
