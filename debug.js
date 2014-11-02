@@ -19,24 +19,19 @@
 //     license or white-label it as set out in licenses/commercial.txt.
 
 var events = require('events');
-var bitcoin = require('bitcoin');
 var winston = require('winston');
-var stratum = require('./lib/stratumServer.js');
+var stratum = require('./lib/pool.js');
 
 winston.log('info', 'hpool-stratum <debug> starting..');
 
-// Actually we are in scope of a module and we shouldn't be run on our own.
-// This file is just here for debugging purposes.
-var server = new stratum.Server();
-
-var client = new bitcoin.Client({
+var options = {
     host: '10.0.0.40',
     port: 9337,
-    user: 'user',
-    pass: 'password',
+    username: 'user',
+    password: 'password',
     timeout: 30000
-});
+}
 
-client.getBlockTemplate({}, function(err, blockTemplate, resHeaders) {
-    console.log('response:', blockTemplate);
-});
+// Actually we are in scope of a module and we shouldn't be run on our own.
+// This file is just here for debugging purposes.
+var pool = new stratum.Pool(options);
