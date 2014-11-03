@@ -25,11 +25,14 @@ var stratum = require('./lib/pool.js');
 winston.log('info', 'hpool-stratum <debug> starting..');
 
 var options = {
-    host: '10.0.0.40',
-    port: 9337,
-    username: 'user',
-    password: 'password',
-    timeout: 30000
+    daemon: 
+        {
+            host: '10.0.0.40',
+            port: 9337,
+            username: 'user',
+            password: 'password',
+            timeout: 30000
+        }
 }
 
 // Actually we are in scope of a module and we shouldn't be run on our own.
@@ -37,6 +40,6 @@ var options = {
 var pool = new stratum.Pool(options);
 
 // listen for log messages
-pool.on('log', function(severity, text) {
+pool.on('log', function (severity, text) {
     winston.log(severity, text);
 }).start();
