@@ -30,6 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="lib\daemon.js" />
     <Compile Include="lib\pool.js" />
     <Compile Include="lib\rpcErrorCodes.js" />
     <Compile Include="lib\utils.js" />
