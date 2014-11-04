@@ -30,9 +30,10 @@
         "url": "https://github.com/int6/hpool-stratum/issues"
     },
     "dependencies": {
-        "async": "*",
         "winston": "*",
-        "winston-irc": "*"
+        "winston-irc": "*",
+        "base58-native": "*",
+        "bignum": "*"
     },
   "devDependencies": {
     "mocha": "~2.0.1"

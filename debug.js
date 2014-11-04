@@ -24,23 +24,69 @@ var stratum = require('./lib/pool.js');
 
 winston.log('info', 'hpool-stratum <debug> starting..');
 
-var options = {
+var coinConfig = {
+    name: "Earthcoin",
+    symbol: "EAC",
+    algorithm: "scrypt",
+    site: "http://getearthcoin.com/",
+    blockExplorer: {
+        block: "http://earthchain.info/block/",
+        tx: "http://earthchain.info/tx/",
+        address: "http://earthchain.info/address/"
+    },
+    capatabilities: {
+      submitBlock: true,
+      txMessage: true
+    },
+    options: {
+        isProofOfStakeHybrid: true,
+        blockTemplateModeRequired: false,
+        useDefaultAccount: false,
+        txMessageSupported: true
+    }
+}
+
+var poolConfig = {
+    enabled: true,
+    coin: coinConfig,
+    meta: {
+        motd: 'Welcome to hpool, enjoy your stay! - http://www.hpool.org',
+        txMessage: 'http://www.hpool.org'
+    },
     wallet: {
         address: 'n1DdGwwc3fFX4wP7aS7wvVFvaGLocoUGna'
     },
+    rewards: {
+        "myxWybbhUkGzGF7yaf2QVNx3hh3HWTya5t": 1
+    },
     daemon: 
-        {
-            host: '10.0.0.40',
-            port: 9337,
-            username: 'user',
-            password: 'password',
-            timeout: 30000
+ {
+        host: '10.0.0.40',
+        port: 9337,
+        username: 'user',
+        password: 'password',
+        timeout: 30000
+    },
+    stratum: {
+        enabled: true,
+        ports: {
+            "3337": {
+                vardiff: {
+                    "enabled": true,
+                    "minDiff": 8,
+                    "maxDiff": 512,
+                    "targetTime": 15,
+                    "retargetTime": 90,
+                    "variancePercent": 30
+                }
+            }
         }
+    }
 }
 
 // Actually we are in scope of a module and we shouldn't be run on our own.
 // This file is just here for debugging purposes.
-var pool = new stratum.Pool(options);
+var pool = new stratum.Pool(poolConfig);
 
 // listen for log messages
 pool.on('log', function (severity, text) {
