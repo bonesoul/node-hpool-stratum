@@ -25,6 +25,9 @@ var stratum = require('./lib/pool.js');
 winston.log('info', 'hpool-stratum <debug> starting..');
 
 var options = {
+    wallet: {
+        address: 'n1DdGwwc3fFX4wP7aS7wvVFvaGLocoUGna'
+    },
     daemon: 
         {
             host: '10.0.0.40',
