@@ -35,14 +35,13 @@ var coinConfig = {
         address: "http://earthchain.info/address/"
     },
     capatabilities: {
-      submitBlock: true,
-      txMessage: true
+        submitBlock: true,
+        txMessage: true,
     },
     options: {
         isProofOfStakeHybrid: true,
         blockTemplateModeRequired: false,
         useDefaultAccount: false,
-        txMessageSupported: true
     }
 }
 
