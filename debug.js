@@ -53,8 +53,11 @@ var poolConfig = {
     rewards: {
         "myxWybbhUkGzGF7yaf2QVNx3hh3HWTya5t": 1
     },
+    poller: {
+        interval: 1000,
+    },
     daemon: 
- {
+    {
         host: '10.0.0.40',
         port: 9337,
         username: 'user',

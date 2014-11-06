@@ -36,7 +36,7 @@
     <Compile Include="lib\pool.js" />
     <Compile Include="lib\errors.js" />
     <Compile Include="lib\jobManager.js" />
-    <Compile Include="lib\transaction.js" />
+    <Compile Include="lib\coinbaseTx.js" />
     <Compile Include="lib\utils.js" />
     <Compile Include="debug.js" />
     <Compile Include="lib\client.js" />
