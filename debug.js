@@ -1,5 +1,5 @@
 ﻿// 
-//     hpool-stratum - sratum protocol module for hpool-server
+//     hpool-stratum - stratum protocol module for hpool-server
 //     Copyright (C) 2013 - 2014, hpool project 
 //     http://www.hpool.org - https://github.com/int6/hpool-stratum
 // 
@@ -17,6 +17,7 @@
 // 
 //     Alternatively, you can license this software under a commercial
 //     license or white-label it as set out in licenses/commercial.txt.
+//
 
 var events = require('events');
 var winston = require('winston');
@@ -35,13 +36,7 @@ var coinConfig = {
         address: "http://earthchain.info/address/"
     },
     capatabilities: {
-        submitBlock: true,
-        txMessage: true,
-    },
-    options: {
-        isProofOfStakeHybrid: true,
-        blockTemplateModeRequired: false,
-        useDefaultAccount: false,
+        txMessage: true
     }
 }
 

@@ -1,40 +1,40 @@
 {
-    "name": "hpool-stratum",
-    "version": "0.0.3",
-    "description": "Stratum protocol module for hpool",
-    "license": "GPL-3.0",
-    "keywords": [
-        "stratum",
-        "protocol",
-        "json",
-        "json-rpc"
-    ],
-    "os": [
-        "linux",
-        "darwin",
-        "win32"
-    ],
-    "cpu": [
-        "x64",
-        "ia32",
-        "arm",
-        "mips"
-    ],
-    "homepage": "https://github.com/int6/hpool-stratum",
-    "author": "Huseyin Uslu <shalafiraistlin@gmail.com> (http://www.coinium.org)",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/int6/hpool-stratum.git"
-    },
-    "bugs": {
-        "url": "https://github.com/int6/hpool-stratum/issues"
-    },
-    "dependencies": {
-        "winston": "*",
-        "winston-irc": "*",
-        "base58-native": "*",
-        "bignum": "*"
-    },
+  "name": "hpool-stratum",
+  "version": "0.0.3",
+  "description": "Stratum protocol module for hpool",
+  "license": "GPL-3.0",
+  "keywords": [
+    "stratum",
+    "protocol",
+    "json",
+    "json-rpc"
+  ],
+  "os": [
+    "linux",
+    "darwin",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "ia32",
+    "arm",
+    "mips"
+  ],
+  "homepage": "https://github.com/int6/hpool-stratum",
+  "author": "Huseyin Uslu <shalafiraistlin@gmail.com> (http://www.coinium.org)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/int6/hpool-stratum.git"
+  },
+  "bugs": {
+    "url": "https://github.com/int6/hpool-stratum/issues"
+  },
+  "dependencies": {
+    "base58-native": "*",
+    "bignum": "*",
+    "winston": "^0.8.3",
+    "winston-irc": "*"
+  },
   "devDependencies": {
     "mocha": "~2.0.1"
   },
