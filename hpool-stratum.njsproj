@@ -32,6 +32,7 @@
   <ItemGroup>
     <Compile Include="lib\algorithms.js" />
     <Compile Include="lib\blockTemplate.js" />
+    <Compile Include="lib\context.js" />
     <Compile Include="lib\daemon.js" />
     <Compile Include="lib\merkleTree.js" />
     <Compile Include="lib\pool.js" />
