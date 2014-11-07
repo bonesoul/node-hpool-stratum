@@ -30,6 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="lib\algorithms.js" />
     <Compile Include="lib\blockTemplate.js" />
     <Compile Include="lib\daemon.js" />
     <Compile Include="lib\merkleTree.js" />

@@ -30,6 +30,7 @@
     "url": "https://github.com/int6/hpool-stratum/issues"
   },
   "dependencies": {
+    "hpool-hashlib":  "~0.0.1",
     "base58-native": "*",
     "bignum": "*",
     "winston": "^0.8.3",
