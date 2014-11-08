@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="lib\algorithms.js" />
-    <Compile Include="lib\blockTemplate.js" />
+    <Compile Include="lib\job.js" />
     <Compile Include="lib\context.js" />
     <Compile Include="lib\daemon.js" />
     <Compile Include="lib\merkleTree.js" />
@@ -39,6 +39,7 @@
     <Compile Include="lib\errors.js" />
     <Compile Include="lib\jobManager.js" />
     <Compile Include="lib\coinbaseTx.js" />
+    <Compile Include="lib\shareManager.js" />
     <Compile Include="lib\utils.js" />
     <Compile Include="debug.js" />
     <Compile Include="lib\client.js" />
