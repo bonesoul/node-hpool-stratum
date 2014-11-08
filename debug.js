@@ -21,7 +21,7 @@
 
 var events = require('events');
 var winston = require('winston');
-var stratum = require('./lib/pool.js');
+var Pool = require('./lib/pool.js');
 
 winston.log('info', 'hpool-stratum <debug> starting..');
 
@@ -83,7 +83,7 @@ var poolConfig = {
 
 // Actually we are in scope of a module and we shouldn't be run on our own.
 // This file is just here for debugging purposes.
-var pool = new stratum.Pool(poolConfig);
+var pool = new Pool(poolConfig);
 
 // listen for log messages
 pool.on('log', function (severity, text) {
