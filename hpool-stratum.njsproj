@@ -36,6 +36,7 @@
     <Compile Include="lib\context.js" />
     <Compile Include="lib\daemon.js" />
     <Compile Include="lib\merkleTree.js" />
+    <Compile Include="lib\peerManager.js" />
     <Compile Include="lib\pool.js" />
     <Compile Include="lib\errors.js" />
     <Compile Include="lib\jobManager.js" />
