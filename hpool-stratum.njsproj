@@ -46,11 +46,14 @@
     <Compile Include="debug.js" />
     <Compile Include="lib\client.js" />
     <Compile Include="lib\server.js" />
+    <Compile Include="test\sample.js" />
+    <Content Include="Makefile" />
     <Content Include="package.json" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lib\" />
+    <Folder Include="test\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
 </Project>
