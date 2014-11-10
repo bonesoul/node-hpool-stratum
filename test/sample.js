@@ -1,3 +1,5 @@
+var should = require('should');
+
 ﻿describe('sample', function() {
 
     var data;
@@ -6,9 +8,11 @@
         data = {
             name: 'sample'
         };
+	done();
     });
 
-    it('should', function() {
+    it('should', function(done) {
         data.should.have.property('name', 'sample');
+	done();
     });
 });

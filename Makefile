@@ -1,13 +1,11 @@
-﻿REPORTER = dot
+MOCHA=./node_modules/.bin/mocha
 
 test:
-    @ NODE_ENV = test./node_modules/.bin / mocha \
-        --reporter $(REPORTER) \
+	$(MOCHA)
 
-test-w:
-    @NODE_ENV=test ./node_modules/.bin/mocha \
-        --reporter $(REPORTER) \
-        --growl \
-        --watch
+test-watch:
+	$(MOCHA) \
+    --growl \
+    --watch
 
-.PHONY: test test-w
+.PHONY: test test-watch
