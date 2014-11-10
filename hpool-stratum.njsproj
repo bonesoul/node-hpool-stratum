@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="lib\algorithms.js" />
+    <Compile Include="lib\blockManager.js" />
     <Compile Include="lib\job.js" />
     <Compile Include="lib\context.js" />
     <Compile Include="lib\daemon.js" />
