@@ -22,7 +22,8 @@
 var should = require('should');
 var async = require('async');
 var Pool = require('../../lib/pool.js');
-var StratumClient = require('./stratumClient.js');
+var StratumClient = require('./client.js');
+var DaemonIntercepter = require('./interceptor.js');
 require('./setup.js');
 
 var _this = this;
@@ -30,12 +31,18 @@ var _this = this;
 describe('stratum', function () {
     describe('server', function () {
         
-        before(function () {            
+        before(function () {
             _this.requestCounter = 0; // create a request counter in order to track request Id's.
+            _this.daemon = new DaemonIntercepter(); // create interceptor for daemon connection so we can simulate it.
         });
         
         beforeEach(function () {
-            _this.requestCounter++; // before each test, increase the request counter.
+            _this.requestCounter++; // before each test, increase the request counter.   
+            _this.daemon.enable(); // enable intercepting of messages.
+        });
+
+        afterEach(function() {
+            _this.daemon.disable(); // disable intercepting of messages.
         });
 
         it('should start', function (done) {

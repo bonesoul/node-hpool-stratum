@@ -50,7 +50,7 @@ global.config = {
     },
     daemon: 
     {
-        host: '10.0.0.40',
+        host: 'localhost',
         port: 9337,
         username: 'user',
         password: 'password',
