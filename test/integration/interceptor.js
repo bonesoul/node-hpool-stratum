@@ -29,9 +29,11 @@ var daemonIntercepter = module.exports = function () {
     // intercep connection to coin daemon coin daemon @ localhost:9337 and simulate it.
     _this.mitm = Mitm()
     .on("connect", function(socket, options) {
-        socket.bypass();
+
+	if(options.host !== 'localhost' || options.port !== 9337)
+		socket.bypass();
     })
-    .on("request", function (req, res) {        
+    .on("request", function (req, res) {    
         req.on("data", function (data) {            
             var request = JSON.parse(data);
             
@@ -50,7 +52,7 @@ var daemonIntercepter = module.exports = function () {
             res.end(json);
         });
     })    
-    .disable(); // disable by default.
+//    .disable(); // disable by default.
     
     function handleMessage(request) {
         
