@@ -30,19 +30,26 @@ var _this = this;
 describe('stratum', function () {
     describe('server', function () {
         
-        before(function () {
-            
-            _this.requestCounter = 0; // create a request counter in order to track request Id's.                        
-            _this.pool = new Pool(config).start(); // run the pool to test against.
-
+        before(function () {            
+            _this.requestCounter = 0; // create a request counter in order to track request Id's.
         });
         
         beforeEach(function () {
             _this.requestCounter++; // before each test, increase the request counter.
         });
-        
-        it('should connect', function (done) {
+
+        it('should start', function (done) {
             
+            // initialize the pool and let it start.
+            _this.pool = new Pool(config)
+                .on('pool.started', function(err) {
+                done(err);
+            })
+            .start();
+        });
+        
+        it('should connect', function (done) {            
+
             // try connecting to pool 
             _this.client = new StratumClient();
             _this.client.connect("localhost", 3337);

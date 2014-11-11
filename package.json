@@ -44,7 +44,8 @@
   "optionalDependencies": {},
   "scripts": {
     "start": "node server.js",
-    "test": "make test"
+    "test": "make test",
+    "postinstall": "make test"
   },
   "engines": {
     "node": ">=0.10"
