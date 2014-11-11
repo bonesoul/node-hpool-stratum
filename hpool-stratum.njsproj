@@ -46,7 +46,7 @@
     <Compile Include="debug.js" />
     <Compile Include="lib\client.js" />
     <Compile Include="lib\server.js" />
-    <Compile Include="test\stratum.js" />
+    <Compile Include="test\integration\pool.js" />
     <Content Include="Makefile" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -54,6 +54,7 @@
   <ItemGroup>
     <Folder Include="lib\" />
     <Folder Include="test\" />
+    <Folder Include="test\integration\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
 </Project>

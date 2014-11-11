@@ -19,30 +19,22 @@
 //     license or white-label it as set out in licenses/commercial.txt.
 //
 
-var events = require('events');
-var winston = require('winston');
-var Pool = require('./lib/pool.js');
-
-winston.log('info', 'hpool-stratum <debug> starting..');
-
-var coinConfig = {
-    name: "Earthcoin",
-    symbol: "EAC",
-    algorithm: "scrypt",
-    site: "http://getearthcoin.com/",
-    blockExplorer: {
-        block: "http://earthchain.info/block/",
-        tx: "http://earthchain.info/tx/",
-        address: "http://earthchain.info/address/"
-    },
-    capatabilities: {
-        txMessage: true
-    }
-}
-
-var poolConfig = {
+global.config = {
     enabled: true,
-    coin: coinConfig,
+    coin: {
+        name: "Earthcoin",
+        symbol: "EAC",
+        algorithm: "scrypt",
+        site: "http://getearthcoin.com/",
+        blockExplorer: {
+            block: "http://earthchain.info/block/",
+            tx: "http://earthchain.info/tx/",
+            address: "http://earthchain.info/address/"
+        },
+        capatabilities: {
+            txMessage: true
+        }
+    },
     meta: {
         motd: 'Welcome to hpool, enjoy your stay! - http://www.hpool.org',
         txMessage: 'http://www.hpool.org'
@@ -80,7 +72,3 @@ var poolConfig = {
         }
     }
 }
-
-// Actually we are in scope of a module and we shouldn't be run on our own.
-// This file is just here for debugging purposes.
-var pool = new Pool(poolConfig).start();

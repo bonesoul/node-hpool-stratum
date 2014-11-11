@@ -1,11 +1,13 @@
 MOCHA=node_modules/mocha/bin/mocha
 
 test:
-	$(MOCHA)
+	$(MOCHA) \
+	--recursive
 
 test-watch:
 	$(MOCHA) \
     --growl \
-    --watch
+    --watch \
+	--recursive
 
 .PHONY: test test-watch
