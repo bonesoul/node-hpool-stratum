@@ -30,6 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="contrib\testRunner.js" />
     <Compile Include="lib\algorithms.js" />
     <Compile Include="lib\blockManager.js" />
     <Compile Include="lib\job.js" />
@@ -57,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lib\" />
+    <Folder Include="contrib\" />
     <Folder Include="test\" />
     <Folder Include="test\integration\" />
   </ItemGroup>

@@ -48,6 +48,7 @@ describe('stratum', function () {
         it('should start', function (done) {
             
             // initialize the pool and let it start.
+
             _this.pool = new Pool(config)
                 .on('pool.started', function(err) {
                 done(err);
@@ -58,6 +59,7 @@ describe('stratum', function () {
         it('should connect', function (done) {            
 
             // try connecting to pool 
+
             _this.client = new StratumClient();
             _this.client.connect("localhost", 3337);
             
@@ -74,6 +76,7 @@ describe('stratum', function () {
         it('should subscribe', function (done) {
             
             // send mining.subscribe request.
+
             _this.client.sendJson({
                 id    : _this.requestCounter,
                 method: "mining.subscribe",
@@ -85,7 +88,6 @@ describe('stratum', function () {
             // response: { "id":2, "result":[[["mining.set_difficulty", 16], ["mining.notify", "deadc0de0100000000000000"]]," 30000000 ",4]," error ":null}
             
             _this.client.once('incoming.message', function (message) {
-                
                 message.should.have.property('id', _this.requestCounter); // make sure the reply contains the same request id.
                 should.not.exist(message.error); // the response should contain no errors.
                 message.result.should.be.instanceof(Array).and.have.lengthOf(3); // response should be an array with 3 elements.
@@ -112,7 +114,8 @@ describe('stratum', function () {
             // * mining.set_difficulty
 
             async.series([
-                function (callback) {                    
+                function (callback) {
+                                  
                     // check for mining.authorize
                     // request: { 'id' : 3, 'method' : 'mining.authorize', 'params' : ['username','password'] }
                     // response: { id: 3, result: true, error: null }
@@ -124,7 +127,8 @@ describe('stratum', function () {
                         callback();
                     });                                        
                 },
-                function (callback) {                    
+                function (callback) {
+                     
                     // next, we should recieve a client.show_message
                     // { id: null, method: 'client.show_message', params: [ 'Welcome to hpool, enjoy your stay!' ] }
 
@@ -133,7 +137,8 @@ describe('stratum', function () {
                         callback();
                     });
                 },
-                function (callback) {                    
+                function (callback) {
+                            
                     // next we should recieve a mining.set_difficulty
                     // { id: null, method: 'mining.set_difficulty', params: [ 16 ] }
 
