@@ -46,10 +46,13 @@
     <Compile Include="debug.js" />
     <Compile Include="lib\client.js" />
     <Compile Include="lib\server.js" />
+    <Compile Include="test\integration\stratumClient.js" />
     <Compile Include="test\integration\pool.js" />
+    <Compile Include="test\integration\setup.js" />
     <Content Include="Makefile" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="test\mocha.opts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lib\" />

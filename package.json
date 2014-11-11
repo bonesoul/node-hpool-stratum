@@ -30,15 +30,16 @@
     "url": "https://github.com/int6/hpool-stratum/issues"
   },
   "dependencies": {
-    "hpool-hashlib":  "~0.0.1",
+    "async": "^0.9.0",
     "base58-native": "*",
     "bignum": "*",
+    "hpool-hashlib": "~0.0.1",
     "winston": "^0.8.3"
   },
   "devDependencies": {
     "mocha": "~2.0.1",
     "should": "*",
-    "mitm":  "*"
+    "mitm": "*"
   },
   "optionalDependencies": {},
   "scripts": {
