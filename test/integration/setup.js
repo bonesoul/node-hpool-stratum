@@ -22,14 +22,14 @@
 global.config = {
     enabled: true,
     coin: {
-        name: "Earthcoin",
-        symbol: "EAC",
-        algorithm: "scrypt",
-        site: "http://getearthcoin.com/",
+        name: 'Earthcoin',
+        symbol: 'EAC',
+        algorithm: 'scrypt',
+        site: 'http://getearthcoin.com/',
         blockExplorer: {
-            block: "http://earthchain.info/block/",
-            tx: "http://earthchain.info/tx/",
-            address: "http://earthchain.info/address/"
+            block: 'http://earthchain.info/block/2',
+            tx: 'http://earthchain.info/tx/',
+            address: 'http://earthchain.info/address/'
         },
         capatabilities: {
             txMessage: true
@@ -43,7 +43,7 @@ global.config = {
         address: 'n1DdGwwc3fFX4wP7aS7wvVFvaGLocoUGna'
     },
     rewards: {
-        "myxWybbhUkGzGF7yaf2QVNx3hh3HWTya5t": 1
+        'myxWybbhUkGzGF7yaf2QVNx3hh3HWTya5t': 1
     },
     poller: {
         interval: 1000,
@@ -59,14 +59,14 @@ global.config = {
     stratum: {
         enabled: true,
         ports: {
-            "3337": {
+            '3337': {
                 vardiff: {
-                    "enabled": true,
-                    "minDiff": 8,
-                    "maxDiff": 512,
-                    "targetTime": 15,
-                    "retargetTime": 90,
-                    "variancePercent": 30
+                    'enabled': true,
+                    'minDiff': 8,
+                    'maxDiff': 512,
+                    'targetTime': 15,
+                    'retargetTime': 90,
+                    'variancePercent': 30
                 }
             }
         }

@@ -33,20 +33,25 @@
     "async": "^0.9.0",
     "base58-native": "*",
     "bignum": "*",
-    "commander": "^0.6.1",
     "hpool-hashlib": "~0.0.1",
     "winston": "^0.8.3"
   },
   "devDependencies": {
     "mocha": "~2.0.1",
     "should": "*",
-    "mitm": "*"
+    "mitm": "*",
+    "jshint": "*",
+    "jscs": "*",
+    "istanbul": "*"
   },
   "optionalDependencies": {},
   "scripts": {
-    "start": "node server.js",
+    "start": "node debug.js",
+    "lint": "./node_modules/.bin/jshint .",
+    "checkStyle": "./node_modules/.bin/jscs .",
     "test": "make test",
-    "postinstall": "make test"
+    "posttest": "./node_modules/.bin/istanbul check-coverage && rm -rf coverage",
+    "postinstall": "make test"    
   },
   "engines": {
     "node": ">=0.10"

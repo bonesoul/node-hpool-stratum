@@ -30,7 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="contrib\testRunner.js" />
+    <Compile Include=".jshintrc" />
     <Compile Include="lib\algorithms.js" />
     <Compile Include="lib\blockManager.js" />
     <Compile Include="lib\job.js" />
@@ -51,6 +51,7 @@
     <Compile Include="test\integration\interceptor.js" />
     <Compile Include="test\integration\pool.js" />
     <Compile Include="test\integration\setup.js" />
+    <Content Include=".jscsrc" />
     <Content Include="Makefile" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -58,7 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lib\" />
-    <Folder Include="contrib\" />
     <Folder Include="test\" />
     <Folder Include="test\integration\" />
   </ItemGroup>
