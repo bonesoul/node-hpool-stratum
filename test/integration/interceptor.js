@@ -104,7 +104,7 @@ var daemonIntercepter = module.exports = function () {
                 balance: 24670138.54690000,
                 blocks: 17848,
                 timeoffset: 0,
-                connections: 0,
+                connections: 1,
                 proxy: "",
                 difficulty: 0.01381189,
                 testnet: true,
