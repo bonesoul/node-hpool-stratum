@@ -36,13 +36,14 @@
     "hpool-hashlib": "~0.0.1",
     "winston": "^0.8.3"
   },
-  "devDependencies": {
+  "devDependencies": {     
     "mocha": "~2.0.1",
     "should": "*",
     "mitm": "*",
     "jshint": "*",
     "jscs": "*",
-    "istanbul": "*"
+    "istanbul": "*",
+    "nodetime": "*"
   },
   "scripts": {
     "start": "node src/debug.js",
