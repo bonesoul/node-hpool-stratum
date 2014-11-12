@@ -45,7 +45,7 @@
     "istanbul": "*"
   },
   "scripts": {
-    "start": "node debug.js",
+    "start": "node src/debug.js",
     "lint": "./node_modules/.bin/jshint .",
     "checkStyle": "./node_modules/.bin/jscs .",
     "test": "make test",

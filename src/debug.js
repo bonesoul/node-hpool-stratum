@@ -21,7 +21,7 @@
 
 var events = require('events');
 var winston = require('winston');
-var Pool = require('./lib/pool.js');
+var Pool = require('../lib/pool.js');
 
 winston.log('info', 'hpool-stratum <debug> starting..');
 
