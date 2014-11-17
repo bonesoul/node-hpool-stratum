@@ -51,7 +51,8 @@
     "checkStyle": "./node_modules/.bin/jscs .",
     "test": "make test",
     "posttest": "./node_modules/.bin/istanbul check-coverage && rm -rf coverage",
-    "postinstall": "make test"    
+    "postinstall": "make test",
+    "benchmark": "node test/benchmark/benchmark.js"
   },
   "engines": {
     "node": ">=0.10",

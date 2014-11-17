@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a6c82125-2ee2-49f7-9570-259346688029</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>src\debug.js</StartupFile>
+    <StartupFile>test\benchmark\benchmark.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -47,6 +47,7 @@
     <Compile Include="src\debug.js" />
     <Compile Include="lib\client.js" />
     <Compile Include="lib\server.js" />
+    <Compile Include="test\benchmark\benchmark.js" />
     <Compile Include="test\integration\client.js" />
     <Compile Include="test\integration\interceptor.js" />
     <Compile Include="test\integration\pool.js" />
@@ -63,6 +64,7 @@
     <Folder Include="src\" />
     <Folder Include="test\" />
     <Folder Include="test\integration\" />
+    <Folder Include="test\benchmark\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
 </Project>
