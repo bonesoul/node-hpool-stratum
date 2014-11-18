@@ -32,12 +32,10 @@ describe('stratum', function () {
     describe('server', function () {
         
         before(function () {
-            _this.requestCounter = 0; // create a request counter in order to track request Id's.
             _this.daemon = new DaemonIntercepter(); // create interceptor for daemon connection so we can simulate it.
         });
         
-        beforeEach(function () {
-            _this.requestCounter++; // before each test, increase the request counter.   
+        beforeEach(function () { 
             _this.daemon.enable(); // enable intercepting of messages.
         });
         
@@ -76,17 +74,17 @@ describe('stratum', function () {
         it('should subscribe', function (done) {
             
             // send mining.subscribe request.
-            _this.client.subscribe('hpool-test', function (message) {
+            _this.client.subscribe('hpool-test', function (reply) {
                 
                 // check for mining.subscribe
                 // request: {'id':2, 'method':'mining.subscribe', 'params' : ['hpool-test'] }            
                 // response: { "id":2, "result":[[["mining.set_difficulty", 16], ["mining.notify", "deadc0de0100000000000000"]]," 30000000 ",4]," error ":null}
                 
-                should.not.exist(message.error); // the response should contain no errors.
-                message.result.should.be.instanceof(Array).and.have.lengthOf(3); // response should be an array with 3 elements.
-                message.result[0][0].should.containEql('mining.set_difficulty'); // should contain set_difficulty
-                message.result[0][1].should.containEql('mining.notify'); // should also contain mining.notify
-                message.result[2].should.equal(4); // the last member (extraNonce2Size) should be 4.                
+                should.not.exist(reply.error); // the response should contain no errors.
+                reply.result.should.be.instanceof(Array).and.have.lengthOf(3); // response should be an array with 3 elements.
+                reply.result[0][0].should.containEql('mining.set_difficulty'); // should contain set_difficulty
+                reply.result[0][1].should.containEql('mining.notify'); // should also contain mining.notify
+                reply.result[2].should.equal(4); // the last member (extraNonce2Size) should be 4.                
                 done();
             });
         });
@@ -94,14 +92,14 @@ describe('stratum', function () {
         it('should authorize', function (done) {
             
             // send mining.authorize request.
-            _this.client.authorize('username', 'password', function (message) {
+            _this.client.authorize('username', 'password', function (reply) {
                 
                 // check for mining.authorize
                 // request: { 'id' : 3, 'method' : 'mining.authorize', 'params' : ['username','password'] }
                 // response: { id: 3, result: true, error: null }
                 
-                should.not.exist(message.error); // the response should contain no errors.
-                message.result.should.equal(true); // make sure we were able to authorize.
+                should.not.exist(reply.error); // the response should contain no errors.
+                reply.result.should.equal(true); // make sure we were able to authorize.
                 
                 // set 3 tasks to parse next messages;
                 // * client.show_message
@@ -114,7 +112,7 @@ describe('stratum', function () {
                         // we should recieve a client.show_message
                         // { id: null, method: 'client.show_message', params: [ 'Welcome to hpool, enjoy your stay!' ] }
                         
-                        _this.client.once('client.show_message', function (message) {
+                        _this.client.once('client.show_message', function () {
                             callback();
                         });
                     },
@@ -149,6 +147,9 @@ describe('stratum', function () {
                         // }                    
                         
                         _this.client.once('mining.notify', function (message) {
+
+                            _this.job = message; // store the job as we will need it later.
+
                             message.params.should.be.instanceof(Array).and.have.lengthOf(9); // params should be an array and it should contain 9 elements.
                             message.params[0].should.equal('1'); // job Id should equal 1.                            
                             message.params[5].should.equal('00000002'); // version should be 2.
@@ -165,9 +166,17 @@ describe('stratum', function () {
             });
         });
 
-        it('should process work submissions', function(done) {
-
-        });
+        describe('submit work', function () {
+            it('should handle incorrect extraNonce2 size', function (done) {
+                _this.client.submit('username', _this.job.params[0], 00000000, _this.job.params[7], 00000000, function (reply) {
+                    
+                    reply.result.should.equal(false); // the work submission should rejected.
+                    reply.error[0].should.equal(20); // the error should be 20 (submit error)
+                    reply.error[1].should.equal('Incorrect size of extranonce2');
+                    done();
+                });
+            });
+        });        
     });
 });
 

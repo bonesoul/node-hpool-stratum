@@ -55,7 +55,7 @@ function createClient() {
                         _this.clientCount++;
 
                         var submitWork = function() {
-                            client.submitWork('username', json.params[0], 00000000, json.params[7], 00000000, function(reply) {
+                            client.submit('username', json.params[0], 00000000, json.params[7], 00000000, function(reply) {
                                 _this.requestCount++;
                                 setTimeout(submitWork, 0);
                             });

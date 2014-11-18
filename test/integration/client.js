@@ -75,23 +75,12 @@ var stratumTestClient = module.exports = function () {
     function handleMessage(message) {
         
         // find if the message is a reply to our previos requests or a direct request by the server.
+
         if (typeof message.result !== 'undefined') // if it's a reply
             _this.emit('message.reply-' + message.id, message); // emit it using the message.id
         else if (typeof message.method !== 'undefined') // else if it's a request by the server
             _this.emit(message.method, message); // emit it using the method name
     };
-
-    this.sendJson = function () {
-        var data = '';
-        for (var i = 0; i < arguments.length; i++) {
-            data += JSON.stringify(arguments[i]) + '\n';
-        }
-        _this.send(data);
-    }
-
-    this.send = function(data) {
-        _this.socket.write(data);
-    }
 
     this.subscribe = function(signature, callback) {
 
@@ -101,7 +90,7 @@ var stratumTestClient = module.exports = function () {
             params: [signature]
         };
 
-        _this.sendJson(request);
+        sendJson(request);
 
         _this.once('message.reply-' + request.id, function(message) {
             callback(message);
@@ -116,14 +105,14 @@ var stratumTestClient = module.exports = function () {
             params: [username, password]
         };
 
-        _this.sendJson(request);
+        sendJson(request);
 
         _this.once('message.reply-' + request.id, function (message) {
             callback(message);
         });
     }
 
-    _this.submitWork = function(worker, jobId, extraNonce2, nTime, nonce, callback) {
+    _this.submit = function(worker, jobId, extraNonce2, nTime, nonce, callback) {
 
         var request = {
             id: _this.requestCounter++,
@@ -131,12 +120,20 @@ var stratumTestClient = module.exports = function () {
             params: [worker, jobId, extraNonce2, nTime, nonce]
         };
 
-        _this.sendJson(request);
+        sendJson(request);
 
         _this.once('message.reply-' + request.id, function (message) {
             if (message.id = request.id)
                 callback(message);
         });
     };
+
+    function sendJson() {
+        var data = '';
+        for (var i = 0; i < arguments.length; i++) {
+            data += JSON.stringify(arguments[i]) + '\n';
+        }
+        _this.socket.write(data);
+    }
 };
 stratumTestClient.prototype.__proto__ = events.EventEmitter.prototype;

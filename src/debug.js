@@ -23,11 +23,6 @@ var events = require('events');
 var winston = require('winston');
 var Pool = require('../lib/pool.js');
 
-require('nodetime').profile({
-    accountKey: '951ce641ab2da27847f20f31801712f400f9faf6', 
-    appName: 'hpool-stratum'
-});
-
 winston.log('info', 'hpool-stratum <debug> starting..');
 
 var poolConfig = {
