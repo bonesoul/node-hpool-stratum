@@ -19,6 +19,7 @@
 //     license or white-label it as set out in licenses/commercial.txt.
 //
 var Pool = require('../../lib/pool.js');
+var context = require('../../lib/context.js');
 var StratumClient = require('../integration/client.js');
 var DaemonIntercepter = require('../integration/interceptor.js');
 require('../integration/setup.js');
@@ -34,9 +35,12 @@ _this.daemon = new DaemonIntercepter(); // create interceptor for daemon connect
 
 _this.pool = new Pool(config)
     .on('pool.started', function(err) {
-
+        context.jobManager.on('job.created', function (job) {
+            setTimeout(summarize, 5000);
+            createClient();
+        });
     })
-    .start();
+.start();
 
 function createClient() {
 
@@ -80,7 +84,4 @@ function summarize() {
     console.log("Errors: %d errors/sec", errorsPerSecond);
     process.exit(0);
 }
-
-setTimeout(summarize, 5000);
-createClient();
 
