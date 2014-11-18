@@ -40,26 +40,26 @@ describe('stratum', function () {
             _this.requestCounter++; // before each test, increase the request counter.   
             _this.daemon.enable(); // enable intercepting of messages.
         });
-
-        afterEach(function() {
+        
+        afterEach(function () {
             _this.daemon.disable(); // disable intercepting of messages.
         });
-
+        
         it('should start', function (done) {
             
             // initialize the pool and let it start.
-
+            
             _this.pool = new Pool(config)
-                .on('pool.started', function(err) {
-                done(err);
-            })
+                .on('pool.started', function (err) {
+                    done(err);
+                })
             .start();
         });
         
-        it('should connect', function (done) {            
-
+        it('should connect', function (done) {
+            
             // try connecting to pool 
-
+            
             _this.client = new StratumClient();
             _this.client.connect("localhost", 3337);
             
@@ -76,111 +76,97 @@ describe('stratum', function () {
         it('should subscribe', function (done) {
             
             // send mining.subscribe request.
-
-            _this.client.sendJson({
-                id    : _this.requestCounter,
-                method: "mining.subscribe",
-                params: ["hpool-test"]
-            });
-
-            // check for mining.subscribe
-            // request: {'id':2, 'method':'mining.subscribe', 'params' : ['hpool-test'] }            
-            // response: { "id":2, "result":[[["mining.set_difficulty", 16], ["mining.notify", "deadc0de0100000000000000"]]," 30000000 ",4]," error ":null}
-            
-            _this.client.once('incoming.message', function (message) {
-                message.should.have.property('id', _this.requestCounter); // make sure the reply contains the same request id.
+            _this.client.subscribe('hpool-test', function (message) {
+                
+                // check for mining.subscribe
+                // request: {'id':2, 'method':'mining.subscribe', 'params' : ['hpool-test'] }            
+                // response: { "id":2, "result":[[["mining.set_difficulty", 16], ["mining.notify", "deadc0de0100000000000000"]]," 30000000 ",4]," error ":null}
+                
                 should.not.exist(message.error); // the response should contain no errors.
                 message.result.should.be.instanceof(Array).and.have.lengthOf(3); // response should be an array with 3 elements.
                 message.result[0][0].should.containEql('mining.set_difficulty'); // should contain set_difficulty
                 message.result[0][1].should.containEql('mining.notify'); // should also contain mining.notify
                 message.result[2].should.equal(4); // the last member (extraNonce2Size) should be 4.                
                 done();
-            });            
+            });
         });
         
         it('should authorize', function (done) {
             
             // send mining.authorize request.
-
-            _this.client.sendJson({
-                id    : _this.requestCounter,
-                method: "mining.authorize",
-                params: ['username', 'password']
-            });
+            _this.client.authorize('username', 'password', function (message) {
+                
+                // check for mining.authorize
+                // request: { 'id' : 3, 'method' : 'mining.authorize', 'params' : ['username','password'] }
+                // response: { id: 3, result: true, error: null }
+                
+                should.not.exist(message.error); // the response should contain no errors.
+                message.result.should.equal(true); // make sure we were able to authorize.
+                
+                // set 3 tasks to parse next messages;
+                // * client.show_message
+                // * mining.set_difficulty
+                // * mining.notify
+                
+                async.series([
+                    function (callback) {
                         
-            // run a series of tasks that will parse the next 4 messages
-            // * reponse to mining.authorize()
-            // * client.show_message
-            // * mining.set_difficulty
+                        // we should recieve a client.show_message
+                        // { id: null, method: 'client.show_message', params: [ 'Welcome to hpool, enjoy your stay!' ] }
+                        
+                        _this.client.once('client.show_message', function (message) {
+                            callback();
+                        });
+                    },
+                    function (callback) {
+                        
+                        // next we should recieve a mining.set_difficulty
+                        // { id: null, method: 'mining.set_difficulty', params: [ 16 ] }
+                        
+                        _this.client.once('mining.set_difficulty', function (message) {
+                            message.params.should.be.instanceof(Array).and.have.lengthOf(1); // params should be an array.
+                            message.params[0].should.equal(16);
+                            callback();
+                        });
+                    },
+                    function (callback) {
+                        
+                        // eventually we should recieve a new job with mining.notify 
+                        // {
+                        //    id: null,
+                        //    method: 'mining.notify',
+                        //    params: [
+                        //        '1',
+                        //        '02e581a45f678af3db0644fe625be40f96a4c9df4d1be8717a95922146a9c604',
+                        //        '02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff2002b645062f503253482f042a04625408',
+                        //        '072f68706f6f6c2f0000000002407ba940f00000001976a914d81b9168e4758c972a9b4d0a5ebb27d6fe0668a688acc05b426d020000001976a914ca47f1ccb629a2346716fb07c780d2d156391c5288ac0000000014687474703a2f2f7777772e68706f6f6c2e6f7267',
+                        //        [],
+                        //        '00000002',
+                        //        '1d1fe3db',
+                        //        '5462042a',
+                        //        true
+                        //    ]
+                        // }                    
+                        
+                        _this.client.once('mining.notify', function (message) {
+                            message.params.should.be.instanceof(Array).and.have.lengthOf(9); // params should be an array and it should contain 9 elements.
+                            message.params[0].should.equal('1'); // job Id should equal 1.                            
+                            message.params[5].should.equal('00000002'); // version should be 2.
+                            message.params[8].should.equal(true); // should force the miner to clear existing jobs.
+                            // TODO: once we have mitm with daemon connectivity we should be able to check for other data here too.
 
-            async.series([
-                function (callback) {
-                                  
-                    // check for mining.authorize
-                    // request: { 'id' : 3, 'method' : 'mining.authorize', 'params' : ['username','password'] }
-                    // response: { id: 3, result: true, error: null }
+                            callback();
+                        });
+                    }
+                ],
+                    function (err) {
+                    done(err);
+                });
+            });
+        });
 
-                    _this.client.once('incoming.message', function (message) {                        
-                        message.should.have.property('id', _this.requestCounter); // make sure the reply contains the same request id.
-                        should.not.exist(message.error); // the response should contain no errors.
-                        message.result.should.equal(true); // make sure we were able to authorize.
-                        callback();
-                    });                                        
-                },
-                function (callback) {
-                     
-                    // next, we should recieve a client.show_message
-                    // { id: null, method: 'client.show_message', params: [ 'Welcome to hpool, enjoy your stay!' ] }
+        it('should process work submissions', function(done) {
 
-                    _this.client.once('incoming.message', function (message) {
-                        message.method.should.equal('client.show_message');
-                        callback();
-                    });
-                },
-                function (callback) {
-                            
-                    // next we should recieve a mining.set_difficulty
-                    // { id: null, method: 'mining.set_difficulty', params: [ 16 ] }
-
-                    _this.client.once('incoming.message', function (message) {                        
-                        message.method.should.equal('mining.set_difficulty');
-                        message.params.should.be.instanceof(Array).and.have.lengthOf(1); // params should be an array.
-                        message.params[0].should.equal(16);
-                        callback();
-                    });
-                },
-                function (callback) {
-
-                    // eventually we should recieve a new job with mining.notify 
-                    //{
-                    //    id: null,
-                    //    method: 'mining.notify',
-                    //    params: [
-                    //        '1',
-                    //        '02e581a45f678af3db0644fe625be40f96a4c9df4d1be8717a95922146a9c604',
-                    //        '02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff2002b645062f503253482f042a04625408',
-                    //        '072f68706f6f6c2f0000000002407ba940f00000001976a914d81b9168e4758c972a9b4d0a5ebb27d6fe0668a688acc05b426d020000001976a914ca47f1ccb629a2346716fb07c780d2d156391c5288ac0000000014687474703a2f2f7777772e68706f6f6c2e6f7267',
-                    //        [],
-                    //        '00000002',
-                    //        '1d1fe3db',
-                    //        '5462042a',
-                    //        true
-                    //    ]
-                    //}                    
-
-                    _this.client.once('incoming.message', function (message) {
-                        message.method.should.equal('mining.notify');
-                        message.params.should.be.instanceof(Array).and.have.lengthOf(9); // params should be an array and it should contain 9 elements.
-                        message.params[0].should.equal('1'); // job Id should equal 1.
-                        // TODO: once we have mitm with daemon connectivity we should be able to check for other data here too.
-                        message.params[5].should.equal('00000002'); // version should be 2.
-                        message.params[8].should.equal(true); // should force the miner to clear existing jobs.
-                        callback();
-                    });
-                }
-            ], function (err) {
-                done(err);
-            });                     
         });
     });
 });

@@ -74,6 +74,8 @@ function createClient() {
 }
 
 function summarize() {
+    
+    // calculate the statistics for the benchmark
     var clientsPerSecond = _this.clientCount / _this.period * 1000;
     var requestsPerSecond = _this.requestCount / _this.period * 1000;
     var errorsPerSecond = _this.errorCount / _this.period * 1000;

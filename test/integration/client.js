@@ -52,6 +52,7 @@ var stratumTestClient = module.exports = function () {
                             return; // skip empty lines
 
                         var json;
+
                         try {
                             json = JSON.parse(message);
                         } catch (e) {
@@ -60,7 +61,7 @@ var stratumTestClient = module.exports = function () {
                             return;
                         }
 
-                        parseMessage(json);
+                        handleMessage(json);
                     });
 
                     buffer = incomplete; // keep the incomplete data in buffer.
@@ -71,15 +72,13 @@ var stratumTestClient = module.exports = function () {
             });
     }
     
-    function parseMessage(json) {
-        _this.emit('incoming.message', json); // TODO: remove this
-                        
-        if (typeof json.result !== 'undefined') {
-            _this.emit('message.reply', json);
-        }
-        else if (typeof json.method !== 'undefined') {
-            _this.emit(json.method, json);
-        }
+    function handleMessage(message) {
+        
+        // find if the message is a reply to our previos requests or a direct request by the server.
+        if (typeof message.result !== 'undefined') // if it's a reply
+            _this.emit('message.reply-' + message.id, message); // emit it using the message.id
+        else if (typeof message.method !== 'undefined') // else if it's a request by the server
+            _this.emit(message.method, message); // emit it using the method name
     };
 
     this.sendJson = function () {
@@ -96,26 +95,30 @@ var stratumTestClient = module.exports = function () {
 
     this.subscribe = function(signature, callback) {
 
-        _this.sendJson({
+        var request = {
             id: _this.requestCounter++,
             method: "mining.subscribe",
             params: [signature]
-        });
+        };
 
-        _this.once('message.reply', function(message) {
+        _this.sendJson(request);
+
+        _this.once('message.reply-' + request.id, function(message) {
             callback(message);
         });
     }
 
     this.authorize = function(username, password, callback) {
-        
-        _this.sendJson({
-            id    : _this.requestCounter++,
+
+        var request = {
+            id: _this.requestCounter++,
             method: "mining.authorize",
             params: [username, password]
-        });
+        };
 
-        _this.once('message.reply', function (message) {
+        _this.sendJson(request);
+
+        _this.once('message.reply-' + request.id, function (message) {
             callback(message);
         });
     }
@@ -130,7 +133,7 @@ var stratumTestClient = module.exports = function () {
 
         _this.sendJson(request);
 
-        _this.once('message.reply', function (message) {
+        _this.once('message.reply-' + request.id, function (message) {
             if (message.id = request.id)
                 callback(message);
         });
