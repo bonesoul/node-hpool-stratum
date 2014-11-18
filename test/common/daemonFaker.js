@@ -22,7 +22,19 @@
 var Mitm = require("mitm");
 var events = require('events');
 
-var daemonIntercepter = module.exports = function () {
+/* 
+ * What is daemon faker?
+ * Daemon faker basically intercepts socket connections and simulates coin daemon by replying back with fake bitcoin-rpc data, 
+ * which eventually allows us to run tests that can utilize a coin daemon connection & functionality.
+ *
+ * By faking a coin daemon, even without bitcoin or similar alt-coin daemon running on the system, we can simulate full stack 
+ * integration tests.
+ * 
+ * To get an a understanding of how we intercept json-rpc connections and fake the data, check out the https://github.com/moll/node-mitm#mitmjs
+ * project.
+ */
+  
+var daemonFaker = module.exports = function () {
     
     var _this = this;
     
@@ -243,4 +255,4 @@ var daemonIntercepter = module.exports = function () {
         _this.mitm.disable();
     }
 };
-daemonIntercepter.prototype.__proto__ = events.EventEmitter.prototype;
+daemonFaker.prototype.__proto__ = events.EventEmitter.prototype;

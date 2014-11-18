@@ -23,7 +23,7 @@ var should = require('should');
 var async = require('async');
 var Pool = require('../../lib/pool.js');
 var StratumClient = require('./client.js');
-var DaemonIntercepter = require('./interceptor.js');
+var DaemonFaker = require('../common/daemonFaker.js');
 require('./setup.js');
 
 var _this = this;
@@ -32,7 +32,7 @@ describe('stratum', function () {
     describe('server', function () {
         
         before(function () {
-            _this.daemon = new DaemonIntercepter(); // create interceptor for daemon connection so we can simulate it.
+            _this.daemon = new DaemonFaker(); // create interceptor for daemon connection so we can simulate it.
         });
         
         beforeEach(function () { 

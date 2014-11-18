@@ -21,7 +21,8 @@
 var Pool = require('../../lib/pool.js');
 var context = require('../../lib/context.js');
 var StratumClient = require('../integration/client.js');
-var DaemonIntercepter = require('../integration/interceptor.js');
+var DaemonFaker = require('../common/daemonFaker.js');
+var status = require('node-status');
 require('../integration/setup.js');
 
 var _this = this;
@@ -31,12 +32,20 @@ _this.clientCount = 0;
 _this.requestCount = 0;
 _this.errorCount = 0;
 
-_this.daemon = new DaemonIntercepter(); // create interceptor for daemon connection so we can simulate it.
+var daemon = new DaemonFaker(); // create a fake coin daemon host so basically we can fake the coin daemon data as we need for the tests.
+
+var pizzas = status.addItem("pizza", {
+    type: ['bar', 'percentage'],
+    max: 65
+});
 
 _this.pool = new Pool(config)
     .on('pool.started', function(err) {
         context.jobManager.on('job.created', function (job) {
-            setTimeout(summarize, 5000);
+
+            status.start();            
+
+            setTimeout(summarize, _this.period);
             createClient();
         });
     })
@@ -56,7 +65,7 @@ function createClient() {
 
                         var submitWork = function() {
                             client.submit('username', json.params[0], 00000000, json.params[7], 00000000, function(reply) {
-                                _this.requestCount++;
+                                _this.requestCount++;                                
                                 setTimeout(submitWork, 0);
                             });
                         }
@@ -71,6 +80,7 @@ function createClient() {
         });
 
     setTimeout(createClient, 0);
+    pizzas.inc();
 }
 
 function summarize() {
