@@ -129,10 +129,8 @@ var stratumTestClient = module.exports = function () {
         };
 
         _this.sendJson(request);
-        console.log('submit work' + request.id);
 
-        _this.on('message.reply', function (message) {
-            console.log('reply ' + message.id);
+        _this.once('message.reply', function (message) {
             if (message.id = request.id)
                 callback(message);
         });

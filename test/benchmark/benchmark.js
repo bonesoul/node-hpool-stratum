@@ -24,40 +24,63 @@ var DaemonIntercepter = require('../integration/interceptor.js');
 require('../integration/setup.js');
 
 var _this = this;
+
+_this.period = 5000;
+_this.clientCount = 0;
+_this.requestCount = 0;
+_this.errorCount = 0;
+
 _this.daemon = new DaemonIntercepter(); // create interceptor for daemon connection so we can simulate it.
 
 _this.pool = new Pool(config)
-    .on('pool.started', function (err) {
+    .on('pool.started', function(err) {
 
     })
     .start();
 
-_this.client = new StratumClient();
-_this.client.connect("localhost", 3337);
+function createClient() {
 
-// we should able to connect the pool.
-_this.client
-    .once('socket.connected', function() {
-        _this.client.subscribe("hpool-test", function () { // subscribe
-            _this.client.authorize('username', 'password', function() { // authorize
-                _this.client.once('mining.notify', function(json) { // wait for mining.notify
+    var client = new StratumClient();
+    client.connect("localhost", 3337); // we should able to connect the pool.
 
+    client.once('socket.connected', function() {
+            client.subscribe("hpool-test", function() { // subscribe
+                client.authorize('username', 'password', function() { // authorize
+                    client.once('mining.notify', function(json) { // wait for mining.notify                    
 
-                    test();
+                        _this.clientCount++;
 
-                        _this.client.submitWork('username', json.params[0], 00000000, json.params[7], 00000000, function(reply) {
-                            console.log(reply);
-                        });
+                        var submitWork = function() {
+                            client.submitWork('username', json.params[0], 00000000, json.params[7], 00000000, function(reply) {
+                                _this.requestCount++;
+                                setTimeout(submitWork, 0);
+                            });
+                        }
 
+                        submitWork();
+                    });
                 });
             });
+        })
+        .once('socket.error', function(error) {
+            _this.errorCount++;
         });
-    })
-    .once('socket.error', function(error) {
-        
-    });
 
-function test() {
-    console.log('timer');
-    setTimeout(test, 1000);
+    setTimeout(createClient, 0);
 }
+
+function summarize() {
+    var clientsPerSecond = _this.clientCount / _this.period * 1000;
+    var requestsPerSecond = _this.requestCount / _this.period * 1000;
+    var errorsPerSecond = _this.errorCount / _this.period * 1000;
+
+    console.log("Done running the benchmark over %d ms", _this.period);
+    console.log("Handled client connections: %d clients/sec", clientsPerSecond);
+    console.log("Handled requests: %d requests/sec", requestsPerSecond);
+    console.log("Errors: %d errors/sec", errorsPerSecond);
+    process.exit(0);
+}
+
+setTimeout(summarize, 5000);
+createClient();
+
