@@ -51,7 +51,7 @@
     <Compile Include="test\common\stratumClient.js" />
     <Compile Include="test\common\daemonFaker.js" />
     <Compile Include="test\integration\stratum.js" />
-    <Compile Include="test\integration\setup.js" />
+    <Compile Include="test\common\config.js" />
     <Content Include=".jscsrc" />
     <Content Include="Makefile" />
     <Content Include="package.json" />
