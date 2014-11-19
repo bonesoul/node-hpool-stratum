@@ -64,17 +64,15 @@ var poolConfig = {
     },
     stratum: {
         enabled: true,
-        ports: {
-            '3337': {
-                vardiff: {
-                    'enabled': true,
-                    'minDiff': 8,
-                    'maxDiff': 512,
-                    'targetTime': 15,
-                    'retargetTime': 90,
-                    'variancePercent': 30
-                }
-            }
+        port: 3337,
+        diff: 16,
+        vardiff: {
+            'enabled': true,
+            'minDiff': 8,
+            'maxDiff': 512,
+            'targetTime': 15,
+            'retargetTime': 90,
+            'variancePercent': 30
         }
     }
 }

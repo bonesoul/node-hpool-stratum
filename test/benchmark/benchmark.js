@@ -22,7 +22,6 @@ var Pool = require('../../lib/pool.js');
 var context = require('../../lib/context.js');
 var StratumClient = require('../integration/client.js');
 var DaemonFaker = require('../common/daemonFaker.js');
-var status = require('node-status');
 require('../integration/setup.js');
 
 var _this = this;
@@ -34,17 +33,11 @@ _this.errorCount = 0;
 
 var daemon = new DaemonFaker(); // create a fake coin daemon host so basically we can fake the coin daemon data as we need for the tests.
 
-var pizzas = status.addItem("pizza", {
-    type: ['bar', 'percentage'],
-    max: 65
-});
+config.stratum.port = 3337;
 
 _this.pool = new Pool(config)
     .on('pool.started', function(err) {
         context.jobManager.on('job.created', function (job) {
-
-            status.start();            
-
             setTimeout(summarize, _this.period);
             createClient();
         });
@@ -54,7 +47,7 @@ _this.pool = new Pool(config)
 function createClient() {
 
     var client = new StratumClient();
-    client.connect("localhost", 3337); // we should able to connect the pool.
+    client.connect("localhost", context.config.stratum.port); // we should able to connect the pool.
 
     client.once('socket.connected', function() {
             client.subscribe("hpool-test", function() { // subscribe
@@ -77,18 +70,17 @@ function createClient() {
         })
         .once('socket.error', function(error) {
             _this.errorCount++;
-        });
+    });
 
     setTimeout(createClient, 0);
-    pizzas.inc();
 }
 
 function summarize() {
     
     // calculate the statistics for the benchmark
-    var clientsPerSecond = _this.clientCount / _this.period * 1000;
-    var requestsPerSecond = _this.requestCount / _this.period * 1000;
-    var errorsPerSecond = _this.errorCount / _this.period * 1000;
+    var clientsPerSecond = (_this.clientCount / _this.period * 1000).toFixed(2);;
+    var requestsPerSecond = (_this.requestCount / _this.period * 1000).toFixed(2);;
+    var errorsPerSecond = (_this.errorCount / _this.period * 1000).toFixed(2);;
 
     console.log("Done running the benchmark over %d ms", _this.period);
     console.log("Handled client connections: %d clients/sec", clientsPerSecond);

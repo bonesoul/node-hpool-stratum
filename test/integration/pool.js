@@ -46,7 +46,8 @@ describe('stratum', function () {
         it('should start', function (done) {
             
             // initialize the pool and let it start.
-            
+
+            config.stratum.port = 3337;
             _this.pool = new Pool(config)
                 .on('pool.started', function (err) {
                     done(err);

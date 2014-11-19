@@ -34,8 +34,7 @@
     "base58-native": "*",
     "bignum": "*",
     "hpool-hashlib": "~0.0.1",
-    "winston": "^0.8.3",
-    "node-status": "*"
+    "winston": "^0.8.3"
   },
   "devDependencies": {     
     "mocha": "~2.0.1",
@@ -51,7 +50,6 @@
     "checkStyle": "./node_modules/.bin/jscs .",
     "test": "make test",
     "posttest": "./node_modules/.bin/istanbul check-coverage && rm -rf coverage",
-    "postinstall": "make test",
     "benchmark": "node test/benchmark/benchmark.js"
   },
   "engines": {
