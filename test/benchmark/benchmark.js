@@ -20,7 +20,7 @@
 //
 var Pool = require('../../lib/pool.js');
 var context = require('../../lib/context.js');
-var StratumClient = require('../integration/client.js');
+var StratumClient = require('../common/stratumClient.js');
 var DaemonFaker = require('../common/daemonFaker.js');
 require('../integration/setup.js');
 
@@ -83,8 +83,8 @@ function summarize() {
     var errorsPerSecond = (_this.errorCount / _this.period * 1000).toFixed(2);;
 
     console.log("Done running the benchmark over %d ms", _this.period);
-    console.log("Handled client connections: %d clients/sec", clientsPerSecond);
-    console.log("Handled requests: %d requests/sec", requestsPerSecond);
+    console.log("Handled a total of %d clients [%d clients/sec]", _this.clientCount, clientsPerSecond);
+    console.log("Handled a total of %d requests [%d requests/sec]", _this.requestCount, requestsPerSecond);
     console.log("Errors: %d errors/sec", errorsPerSecond);
     process.exit(0);
 }

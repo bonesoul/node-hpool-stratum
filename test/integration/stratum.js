@@ -22,7 +22,7 @@
 var should = require('should');
 var async = require('async');
 var Pool = require('../../lib/pool.js');
-var StratumClient = require('./client.js');
+var StratumClient = require('../common/stratumClient.js');
 var DaemonFaker = require('../common/daemonFaker.js');
 require('./setup.js');
 

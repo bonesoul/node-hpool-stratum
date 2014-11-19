@@ -48,9 +48,9 @@
     <Compile Include="lib\client.js" />
     <Compile Include="lib\server.js" />
     <Compile Include="test\benchmark\benchmark.js" />
-    <Compile Include="test\integration\client.js" />
+    <Compile Include="test\common\stratumClient.js" />
     <Compile Include="test\common\daemonFaker.js" />
-    <Compile Include="test\integration\pool.js" />
+    <Compile Include="test\integration\stratum.js" />
     <Compile Include="test\integration\setup.js" />
     <Content Include=".jscsrc" />
     <Content Include="Makefile" />
