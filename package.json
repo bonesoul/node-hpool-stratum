@@ -1,6 +1,6 @@
 {
   "name": "hpool-stratum",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Stratum protocol module for hpool",
   "license": "GPL-3.0",
   "keywords": [

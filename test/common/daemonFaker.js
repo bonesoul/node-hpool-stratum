@@ -34,7 +34,7 @@ var events = require('events');
  * project.
  */
   
-var daemonFaker = module.exports = function () {
+var daemonFaker = module.exports = function (config) {
     
     var _this = this;
     
@@ -42,33 +42,42 @@ var daemonFaker = module.exports = function () {
     _this.mitm = Mitm()
         .on("connect", function(socket, options) {
 
-            if (options.host !== 'localhost' || options.port !== 9337)
+            // make sure we don't intercept anything other then connection to coin daemon
+            if (options.host !== config.daemon.host || options.port !== config.daemon.port)
                 socket.bypass();
         })
-        .on("request", function(req, res) {
-            req.on("data", function (data) {
+        .on("request", function(request, response) {
+            request.on("data", function(data) {
+                
+                var result;
+                var requestJson = JSON.parse(data); // parse the json-rpc request.                
+                
+                // check if it contains multiple requests
+                if (requestJson instanceof Array) {                    
 
-                var request = JSON.parse(data);
-                var response;
-
-                if (request instanceof Array) {
-                    response = [];
-                    request.forEach(function(entry) {
-                        response.push(handleMessage(entry));
+                    result = [];
+                    
+                    // handle the each request and reply them all together in a single response
+                    requestJson.forEach(function(entry) {
+                        result.push(handleRequest(entry));
                     });
+
                 } else {
-                    response = handleMessage(request);
+                    // for single requests
+                    result = handleRequest(requestJson);
                 }
 
-                var json = JSON.stringify(response);
-                res.end(json);
+                var responseJson = JSON.stringify(result); // convert the response to json
+                response.end(responseJson); // send the response
             });
         });
     
-    function handleMessage(request) {
+    // handles a json request and returns the response
+    function handleRequest(request) {
         
         var response = '';
         
+        // switch on the request method
         switch (request.method) {
             case 'getinfo':
                 response = handleGetInfo();
@@ -95,17 +104,19 @@ var daemonFaker = module.exports = function () {
                 response = handleGetBlockCount();
                 break;
             default :
-                response = unhandlesRequest();
+                response = unhandledRequest();
                 break;
         }
         
+        // return the response 
         return {
-            'id' : request.id,
-            'error' : response.error || null,
-            'result' : response.result
+            'id' : request.id, // should be same as the request. id
+            'error' : response.error || null, // set to null if no response.error is not set.
+            'result' : response.result // the result of the request.
         }
     }
     
+    // fakes getinfo() request.
     function handleGetInfo() {
         return {
             result: {
@@ -129,6 +140,7 @@ var daemonFaker = module.exports = function () {
         }
     }
     
+    // fakes getmininginfo() request.
     function handleGetMiningInfo() {
         return {
             result: {
@@ -148,6 +160,7 @@ var daemonFaker = module.exports = function () {
         }
     }
     
+    // fakes getblocktemplate() request.
     function handleGetBlockTemplate() {
         return {
             result: {
@@ -176,6 +189,7 @@ var daemonFaker = module.exports = function () {
         }
     }
     
+    // fakes getpeerinfo() request.
     function handleGetPeerInfo() {
         return {
             result: [
@@ -200,6 +214,7 @@ var daemonFaker = module.exports = function () {
         };
     }
     
+    // fakes getblockcount() request.
     function handleGetBlockCount() {
         return {
             result: 17848,
@@ -207,6 +222,7 @@ var daemonFaker = module.exports = function () {
         };
     }
     
+    // fakes getdifficulty() request.
     function handleGetDifficulty() {
         return {
             result: 0.01381189,
@@ -214,6 +230,7 @@ var daemonFaker = module.exports = function () {
         };
     }
     
+    // fakes response for submitblock().
     function handleSubmitBlock() {
         return {
             result: null,
@@ -223,6 +240,7 @@ var daemonFaker = module.exports = function () {
         };
     }
     
+    // fakes response for validateaddress().
     function handleValidateAddress() {
         return {
             result: {
@@ -238,7 +256,8 @@ var daemonFaker = module.exports = function () {
         };
     }
     
-    function unhandlesRequest() {
+    // returns an error for the requests that we don't know how to handle
+    function unhandledRequest() {
         return {
             result: null,
             error: {
@@ -247,10 +266,12 @@ var daemonFaker = module.exports = function () {
         };
     }
     
+    // enables back intercepting requests.
     this.enable = function () {
         _this.mitm.enable();
     }
-    
+
+    // disables intercepting requests.
     this.disable = function () {
         _this.mitm.disable();
     }

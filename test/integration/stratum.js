@@ -24,30 +24,36 @@ var async = require('async');
 var Pool = require('../../lib/pool.js');
 var StratumClient = require('../common/stratumClient.js');
 var DaemonFaker = require('../common/daemonFaker.js');
-require('./setup.js');
+require('../common/config.js');
+
+/*
+ * Contains the stratum integration tests.
+ */
 
 var _this = this;
 
+// Tests for stratum server functionality.
 describe('stratum', function () {
     describe('server', function () {
         
-        before(function () {
-            _this.daemon = new DaemonFaker(); // create interceptor for daemon connection so we can simulate it.
+        // runs before the tests for once
+        before(function () {                
+            _this.daemon = new DaemonFaker(config); // create interceptor for daemon connection so we can simulate it.
         });
         
+        // runs before the each test.
         beforeEach(function () { 
             _this.daemon.enable(); // enable intercepting of messages.
         });
         
+        // runs after each test.
         afterEach(function () {
             _this.daemon.disable(); // disable intercepting of messages.
         });
         
+        // pool initilization test.
         it('should start', function (done) {
-            
-            // initialize the pool and let it start.
-
-            config.stratum.port = 3337;
+                        
             _this.pool = new Pool(config)
                 .on('pool.started', function (err) {
                     done(err);
@@ -55,9 +61,8 @@ describe('stratum', function () {
             .start();
         });
         
+        // pool connection test.
         it('should connect', function (done) {
-            
-            // try connecting to pool 
             
             _this.client = new StratumClient();
             _this.client.connect("localhost", 3337);
@@ -72,9 +77,9 @@ describe('stratum', function () {
                 });
         });
         
+        // subscription test; pool should be able to handle subscribe requests.
         it('should subscribe', function (done) {
             
-            // send mining.subscribe request.
             _this.client.subscribe('hpool-test', function (reply) {
                 
                 // check for mining.subscribe
@@ -90,6 +95,7 @@ describe('stratum', function () {
             });
         });
         
+        // authentication test; pool should be able to handle authentication requests.
         it('should authorize', function (done) {
             
             // send mining.authorize request.
@@ -166,8 +172,11 @@ describe('stratum', function () {
                 });
             });
         });
-
+        
+        // share submission tests
         describe('submit work', function () {
+            
+            // pool should be able to handle share submissions with incorrect extraNonce2 size.
             it('should handle incorrect extraNonce2 size', function (done) {
                 _this.client.submit('username', _this.job.params[0], 00000000, _this.job.params[7], 00000000, function (reply) {
                     

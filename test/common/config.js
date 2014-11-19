@@ -19,6 +19,10 @@
 //     license or white-label it as set out in licenses/commercial.txt.
 //
 
+/*
+ * Contains the pool configuration to be used in tests.
+ */
+
 global.config = {
     enabled: true,
     coin: {
@@ -58,17 +62,15 @@ global.config = {
     },
     stratum: {
         enabled: true,
-        ports: {
-            '3337': {
-                vardiff: {
-                    'enabled': true,
-                    'minDiff': 8,
-                    'maxDiff': 512,
-                    'targetTime': 15,
-                    'retargetTime': 90,
-                    'variancePercent': 30
-                }
-            }
+        port: 3337,
+        diff: 16,
+        vardiff: {
+            'enabled': true,
+            'minDiff': 8,
+            'maxDiff': 512,
+            'targetTime': 15,
+            'retargetTime': 90,
+            'variancePercent': 30
         }
     }
 }
