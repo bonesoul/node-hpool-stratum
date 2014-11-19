@@ -5,10 +5,7 @@ node_js:
 matrix:
   allow_failures:
     - node_js: "0.11"
-  fast_finish: true  
-after_success:
-	npm test
-	npm run benchmark
+  fast_finish: true
 notifications:
   irc: chat.freenode.net#hpool-dev
   email: false
