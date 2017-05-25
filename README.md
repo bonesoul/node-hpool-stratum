@@ -1,5 +1,7 @@
 ﻿# hpool-stratum
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bonesoul/node-hpool-stratum.svg)](https://greenkeeper.io/)
+
 [![npm version](https://badge.fury.io/js/hpool-stratum.svg)](https://www.npmjs.org/package/hpool-stratum)
 [![Dependency Status](https://david-dm.org/int6/hpool-stratum.svg?style=flat)](https://david-dm.org/int6/hpool-stratum)
 [![travis](https://api.travis-ci.org/int6/hpool-stratum.svg)](https://travis-ci.org/int6/hpool-stratum)
